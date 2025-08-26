@@ -1,5 +1,4 @@
 import java.util.Scanner;
-import java.util.ArrayList;
 
 public class Focus {
 
@@ -17,49 +16,74 @@ public class Focus {
         printLine();
 
         Scanner scanner = new Scanner(System.in);
-        ArrayList<Task> tasks = new ArrayList<>();
+        TaskList tasks = new TaskList();
 
         while (true) {
 
             String input = scanner.nextLine();
-            String[] userCommand = input.split(" ");
+
+            // Split into command + rest. Keep spaces in the rest.
+            String[] parts = input.split(" ", 2);
+            String cmd = parts[0];
+            String taskParams = (parts.length > 1) ? parts[1] : ""; //For user input with 2 or more words
+
             printLine();
 
-            if (input.equals("bye")) {
+            switch (cmd) {
 
-                System.out.println("     Bye. Hope to see you again soon!");
-                printLine();
-                break;
+                case "bye":
 
-            } else if (input.equals("list")) {
+                    System.out.println("     Bye. Hope to see you again soon!");
+                    printLine();
+                    break;
 
-                System.out.println("     Here are the tasks in your list:");
-                for (int i = 0; i < tasks.size(); i++) {
-                    System.out.printf("     %d.%s\n", i + 1, tasks.get(i));
+                case "list":
+
+                    tasks.printTaskList();
+                    break;
+
+                case "mark":
+
+                    int taskIndex = Integer.parseInt(taskParams) - 1;
+                    tasks.markTaskAsDone(taskIndex);
+                    break;
+
+                case "unmark":
+
+                    taskIndex = Integer.parseInt(taskParams) - 1;
+                    tasks.markTaskAsNotDone(taskIndex);
+                    break;
+
+                case "todo":
+
+                    tasks.addTask(new ToDo(taskParams));
+                    break;
+
+                case "deadline": {
+
+                    String[] deadlineStringSplit = taskParams.split(" /by ", 2);
+                    String deadlineDesc = deadlineStringSplit[0];
+                    String deadlineBy = deadlineStringSplit[1];
+                    tasks.addTask(new Deadline(deadlineDesc, deadlineBy));
+                    break;
+
                 }
-                printLine();
 
-            } else if (input.startsWith("mark") || input.startsWith("unmark")) {
+                case "event": {
 
-                int taskIndex = Integer.parseInt(userCommand[1]) - 1;
+                    String[] eventStringSplit = taskParams.split(" /from ", 2);
+                    String desc = eventStringSplit[0];
+                    String[] segTo = eventStringSplit[1].split(" /to ", 2);
+                    String eventStart = segTo[0];
+                    String eventEnd = segTo[1];
+                    tasks.addTask(new Event(desc, eventStart, eventEnd));
+                    break;
 
-                if (userCommand[0].equals("mark")) {
-                    System.out.println("     Nice! I've marked this task as done:");
-                    tasks.get(taskIndex).markAsDone();
-                    System.out.printf("       %s\n", tasks.get(taskIndex));
-                } else if (userCommand[0].equals("unmark")) {
-                    System.out.println("     OK, I've marked this task as not done yet:");
-                    tasks.get(taskIndex).markNotDone();
-                    System.out.printf("       %s\n", tasks.get(taskIndex));
                 }
 
-                printLine();
-
-            } else {
-
-                System.out.printf("     added: %s\n", input);
-                tasks.add(new Task(input));
-                printLine();
+                default:
+                    System.out.println("     Unknown command.");
+                    printLine();
 
             }
 
