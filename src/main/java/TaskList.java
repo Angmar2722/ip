@@ -23,10 +23,24 @@ public class TaskList {
     }
 
     public void printTaskList() {
+        if (this.tasks.isEmpty()) {
+            System.out.println("     No tasks in your list.");
+            printLine();
+            return;
+        }
         System.out.println("     Here are the tasks in your list:");
         for (int i = 0; i < this.tasks.size(); i++) {
             System.out.printf("     %d.%s\n", i + 1, this.tasks.get(i));
         }
+        printLine();
+    }
+
+    public void deleteTask(int i) {
+        String deletedTaskString = this.tasks.get(i).toString();
+        this.tasks.remove(i);
+        System.out.println("     Noted. I've removed this task:");
+        System.out.printf("       %s\n", deletedTaskString);
+        System.out.printf("     Now you have %d tasks in the list.\n", this.tasks.size());
         printLine();
     }
 

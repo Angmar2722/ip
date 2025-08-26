@@ -30,7 +30,7 @@ public class Focus {
         Scanner scanner = new Scanner(System.in);
         TaskList tasks = new TaskList();
 
-        ArrayList<String> cmdList = new ArrayList<>(Arrays.asList("mark", "unmark", "todo", "deadline", "event"));
+        ArrayList<String> cmdList = new ArrayList<>(Arrays.asList("mark", "unmark", "todo", "deadline", "event", "delete"));
 
         while (true) {
 
@@ -68,14 +68,12 @@ public class Focus {
 
                     case "mark":
 
-                        int taskIndex = Integer.parseInt(taskParams) - 1;
-                        tasks.markTaskAsDone(taskIndex);
+                        tasks.markTaskAsDone(Integer.parseInt(taskParams) - 1);
                         break;
 
                     case "unmark":
 
-                        taskIndex = Integer.parseInt(taskParams) - 1;
-                        tasks.markTaskAsNotDone(taskIndex);
+                        tasks.markTaskAsNotDone(Integer.parseInt(taskParams) - 1);
                         break;
 
                     case "todo":
@@ -105,6 +103,13 @@ public class Focus {
 
                     }
 
+                    case "delete": {
+
+                        tasks.deleteTask(Integer.parseInt(taskParams) - 1);
+                        break;
+
+                    }
+
                     default:
                         unknownCommandError();
                         printLine();
@@ -115,7 +120,6 @@ public class Focus {
                 System.out.println("     " + e.getMessage());
                 printLine();
             }
-
 
         }
 
