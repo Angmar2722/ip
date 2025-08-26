@@ -38,50 +38,50 @@ public class Focus {
 
             // Split into command + rest. Keep spaces in the rest.
             String[] parts = input.split(" ", 2);
-            String cmd = parts[0];
+            String cmdString = parts[0];
+            Command cmd = Command.fromString(cmdString);
             String taskParams = (parts.length > 1) ? parts[1] : ""; //For user input with 2 or more words
 
             printLine();
 
             try {
 
-                if (taskParams.isBlank() && !(cmd.equals("list") || cmd.equals("bye"))) {
-                    if (!cmdList.contains(cmd)) {
-                        unknownCommandError();
-                    } else {
-                        emptyCommandError(cmd);
-                    }
+                if (cmd == Command.UNKNOWN) {
+                    unknownCommandError();
+                }
+                if (cmd.requiresNonEmptyArgument() && taskParams.isBlank()) {
+                    emptyCommandError(cmdString);
                 }
 
                 switch (cmd) {
 
-                    case "bye":
+                    case BYE:
 
                         System.out.println("     Bye. Hope to see you again soon!");
                         printLine();
                         break;
 
-                    case "list":
+                    case LIST:
 
                         tasks.printTaskList();
                         break;
 
-                    case "mark":
+                    case MARK:
 
                         tasks.markTaskAsDone(Integer.parseInt(taskParams) - 1);
                         break;
 
-                    case "unmark":
+                    case UNMARK:
 
                         tasks.markTaskAsNotDone(Integer.parseInt(taskParams) - 1);
                         break;
 
-                    case "todo":
+                    case TODO:
 
                         tasks.addTask(new ToDo(taskParams));
                         break;
 
-                    case "deadline": {
+                    case DEADLINE: {
 
                         String[] deadlineStringSplit = taskParams.split(" /by ", 2);
                         String deadlineDesc = deadlineStringSplit[0];
@@ -91,7 +91,7 @@ public class Focus {
 
                     }
 
-                    case "event": {
+                    case EVENT: {
 
                         String[] eventStringSplit = taskParams.split(" /from ", 2);
                         String desc = eventStringSplit[0];
@@ -103,7 +103,7 @@ public class Focus {
 
                     }
 
-                    case "delete": {
+                    case DELETE: {
 
                         tasks.deleteTask(Integer.parseInt(taskParams) - 1);
                         break;
