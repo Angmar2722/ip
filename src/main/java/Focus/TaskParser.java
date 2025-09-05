@@ -49,9 +49,11 @@ public class TaskParser {
             }
 
             String[] times = parts[3].split(" - ", 2); // split into start and end
+
             if (times.length < 2) {
                 throw new FocusException("Event time not in 'start - end' format: " + unparsedLine);
             }
+
             String eventStart = times[0].trim();
             String eventEnd = times[1].trim();
 
