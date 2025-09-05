@@ -34,7 +34,7 @@ public class Event extends Task{
      */
     @Override
     public String toStorageString() {
-        return String.format("E %s| %s - %s", super.toStorageString(), this.eventStart, this.eventEnd);
+        return String.format("E %s | %s - %s", super.toStorageString(), this.eventStart, this.eventEnd);
     }
 
 }

@@ -17,6 +17,14 @@ public class TaskList {
         System.out.println("    ____________________________________________________________");
     }
 
+    public Task get(int i) {
+        return this.tasks.get(i);
+    }
+
+    public int size() {
+        return this.tasks.size();
+    }
+
     public void markTaskAsDone(int i) {
 
         System.out.println("     Nice! I've marked this task as done:");
