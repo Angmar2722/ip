@@ -1,8 +1,10 @@
-import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.Arrays;
+import java.io.IOException;
 
 public class Focus {
+
+    private static TaskStorage taskStorage = new TaskStorage("data/Focus.txt");
+    private static TaskList taskList = new TaskList();
 
     /**
      * prints a horizontal line of dashes
@@ -23,14 +25,19 @@ public class Focus {
 
     public static void main(String[] args) {
 
+        try {
+            taskList = taskStorage.loadTasks();
+        } catch (IOException e) {
+            System.out.println("No stored task list found!");
+        }
+
         printLine();
         System.out.println("    Hello! I'm Focus\n" + "    What can I do for you?");
         printLine();
 
         Scanner scanner = new Scanner(System.in);
-        TaskList tasks = new TaskList();
 
-        ArrayList<String> cmdList = new ArrayList<>(Arrays.asList("mark", "unmark", "todo", "deadline", "event", "delete"));
+        boolean changedTaskList = false;
 
         while (true) {
 
@@ -55,70 +62,83 @@ public class Focus {
 
                 switch (cmd) {
 
-                    case BYE:
+                case BYE:
 
-                        System.out.println("     Bye. Hope to see you again soon!");
-                        printLine();
-                        break;
+                    System.out.println("     Bye. Hope to see you again soon!");
+                    printLine();
+                    scanner.close();
+                    return;
 
-                    case LIST:
+                case LIST:
 
-                        tasks.printTaskList();
-                        break;
+                    taskList.printTaskList();
+                    break;
 
-                    case MARK:
+                case MARK:
 
-                        tasks.markTaskAsDone(Integer.parseInt(taskParams) - 1);
-                        break;
+                    taskList.markTaskAsDone(Integer.parseInt(taskParams) - 1);
+                    break;
 
-                    case UNMARK:
+                case UNMARK:
 
-                        tasks.markTaskAsNotDone(Integer.parseInt(taskParams) - 1);
-                        break;
+                    taskList.markTaskAsNotDone(Integer.parseInt(taskParams) - 1);
+                    break;
 
-                    case TODO:
+                case TODO:
 
-                        tasks.addTask(new ToDo(taskParams));
-                        break;
+                    taskList.addTask(new ToDo(taskParams), false);
+                    changedTaskList = true;
+                    break;
 
-                    case DEADLINE: {
+                case DEADLINE: {
 
-                        String[] deadlineStringSplit = taskParams.split(" /by ", 2);
-                        String deadlineDesc = deadlineStringSplit[0];
-                        String deadlineBy = deadlineStringSplit[1];
-                        tasks.addTask(new Deadline(deadlineDesc, deadlineBy));
-                        break;
+                    String[] deadlineStringSplit = taskParams.split(" /by ", 2);
+                    String deadlineDesc = deadlineStringSplit[0];
+                    String deadlineBy = deadlineStringSplit[1];
+                    taskList.addTask(new Deadline(deadlineDesc, deadlineBy), false);
+                    changedTaskList = true;
+                    break;
 
-                    }
+                }
 
-                    case EVENT: {
+                case EVENT: {
 
-                        String[] eventStringSplit = taskParams.split(" /from ", 2);
-                        String desc = eventStringSplit[0];
-                        String[] segTo = eventStringSplit[1].split(" /to ", 2);
-                        String eventStart = segTo[0];
-                        String eventEnd = segTo[1];
-                        tasks.addTask(new Event(desc, eventStart, eventEnd));
-                        break;
+                    String[] eventStringSplit = taskParams.split(" /from ", 2);
+                    String desc = eventStringSplit[0];
+                    String[] segTo = eventStringSplit[1].split(" /to ", 2);
+                    String eventStart = segTo[0];
+                    String eventEnd = segTo[1];
+                    taskList.addTask(new Event(desc, eventStart, eventEnd), false);
+                    changedTaskList = true;
+                    break;
 
-                    }
+                }
 
-                    case DELETE: {
+                case DELETE: {
 
-                        tasks.deleteTask(Integer.parseInt(taskParams) - 1);
-                        break;
+                    taskList.deleteTask(Integer.parseInt(taskParams) - 1);
+                    changedTaskList = true;
+                    break;
 
-                    }
+                }
 
-                    default:
-                        unknownCommandError();
-                        printLine();
+                default:
+                    unknownCommandError();
+                    printLine();
 
                 }
 
             } catch (FocusException e) {
                 System.out.println("     " + e.getMessage());
                 printLine();
+            }
+
+            if (changedTaskList) {
+                try {
+                    taskStorage.saveTasks(taskList);
+                } catch (IOException e) {
+                    System.out.println("Error saving task list!");
+                }
             }
 
         }
