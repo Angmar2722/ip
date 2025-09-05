@@ -1,3 +1,5 @@
+package Focus;
+
 public class EventCommand extends FocusCommand {
 
     private final String description;

@@ -1,3 +1,5 @@
+package Focus;
+
 public class TaskParser {
 
     public static Task parse(String unparsedLine) throws FocusException {

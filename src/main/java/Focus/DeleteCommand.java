@@ -1,3 +1,5 @@
+package Focus;
+
 public class DeleteCommand extends FocusCommand {
 
     private final int userIndex;

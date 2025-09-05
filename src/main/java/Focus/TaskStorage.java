@@ -1,4 +1,5 @@
-import java.util.ArrayList;
+package Focus;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.BufferedWriter;

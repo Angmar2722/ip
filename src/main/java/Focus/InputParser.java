@@ -1,3 +1,5 @@
+package Focus;
+
 public class InputParser {
 
     /** Throw an error for an empty description of a known command. */

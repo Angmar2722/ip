@@ -1,3 +1,5 @@
+package Focus;
+
 public abstract class FocusCommand {
 
     /** return true if this command exits the app */
@@ -10,7 +12,7 @@ public abstract class FocusCommand {
         return false;
     }
 
-    /** Execute the command. Let TaskList do the printing. */
+    /** Execute the command. Let Focus.TaskList do the printing. */
     public abstract void execute(TaskList tasks) throws FocusException;
 
 }

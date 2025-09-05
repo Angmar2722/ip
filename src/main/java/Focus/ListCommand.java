@@ -1,3 +1,5 @@
+package Focus;
+
 public class ListCommand extends FocusCommand {
 
     @Override

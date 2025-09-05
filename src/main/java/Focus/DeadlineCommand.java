@@ -1,3 +1,5 @@
+package Focus;
+
 public class DeadlineCommand extends FocusCommand {
 
     private final String description;
@@ -9,7 +11,9 @@ public class DeadlineCommand extends FocusCommand {
     }
 
     @Override
-    public boolean isMutating() { return true; }
+    public boolean isMutating() {
+        return true;
+    }
 
     @Override
     public void execute(TaskList tasks) {

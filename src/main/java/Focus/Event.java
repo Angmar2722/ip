@@ -1,3 +1,5 @@
+package Focus;
+
 public class Event extends Task{
 
     protected String eventStart;
