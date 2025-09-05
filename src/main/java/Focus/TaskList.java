@@ -2,6 +2,9 @@ package Focus;
 
 import java.util.ArrayList;
 
+/**
+ * Maintains the collection of tasks and provides operations to query and modify it.
+ */
 public class TaskList {
 
     private ArrayList<Task> tasks = new ArrayList<>();
@@ -12,14 +15,6 @@ public class TaskList {
 
     public void printLine() {
         System.out.println("    ____________________________________________________________");
-    }
-
-    public int size() {
-        return this.tasks.size();
-    }
-
-    public Task getTaskAtIndex(int index) {
-        return this.tasks.get(index);
     }
 
     public void markTaskAsDone(int i) {
@@ -36,6 +31,9 @@ public class TaskList {
         printLine();
     }
 
+    /**
+     * Prints all tasks to standard output in display format.
+     */
     public void printTaskList() {
         if (this.tasks.isEmpty()) {
             System.out.println("     No tasks in your list.");
@@ -49,6 +47,9 @@ public class TaskList {
         printLine();
     }
 
+    /**
+     * Prints all tasks to standard output based on keyword matching from FindCommand.
+     */
     public void printMatchingWords(String keyword) {
         System.out.println("     Here are the matching tasks in your list:");
         String k = keyword.toLowerCase();
@@ -66,6 +67,11 @@ public class TaskList {
         printLine();
     }
 
+    /**
+     * Deletes a task at the given zero-based index.
+     *
+     * @param i Zero-based index of the task to delete.
+     */
     public void deleteTask(int i) {
         String deletedTaskString = this.tasks.get(i).toString();
         this.tasks.remove(i);
@@ -75,6 +81,13 @@ public class TaskList {
         printLine();
     }
 
+    /**
+     * Adds a task to the list.
+     *
+     * @param task Task to add.
+     * @param loading true if called during file loading, false if user-initiated.
+     *                Used to print message
+     */
     public void addTask(Task task, boolean loading) {
         tasks.add(task);
         if (!loading) {

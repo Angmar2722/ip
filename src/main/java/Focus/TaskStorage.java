@@ -16,10 +16,21 @@ public class TaskStorage {
 
     private TaskParser taskParser = new TaskParser();
 
+    /**
+     * Constructs a TaskStorage object that reads from and writes to the given file path.
+     *
+     * @param filePath Relative path to the save file (e.g. data/Focus.txt).
+     */
     public TaskStorage(String filePath) {
         this.FILEPATH = filePath;
     }
 
+    /**
+     * Saves the given tasks to the storage file.
+     *
+     * @param taskList Task list to store.
+     * @throws IOException If an I/O error occurs while writing.
+     */
     public void saveTasks(TaskList taskList) throws IOException {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILEPATH))) {
@@ -33,6 +44,13 @@ public class TaskStorage {
 
     }
 
+    /**
+     * Loads tasks from the storage file.
+     * Missing files and folders are handled gracefully by returning an empty list.
+     *
+     * @return A TaskList containing the loaded tasks.
+     * @throws IOException If an I/O error occurs while reading.
+     */
     public TaskList loadTasks() throws IOException {
 
         TaskList taskList = new TaskList();
