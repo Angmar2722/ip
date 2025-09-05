@@ -26,7 +26,8 @@ public class TaskParser {
             if (parts.length < 4) {
                 throw new FocusException("Deadline missing 'by': " + unparsedLine);
             }
-            toRet = new Deadline(description, parts[3]);
+
+            toRet = new Deadline(description, parts[3].trim());
             break;
 
         case 'E':
