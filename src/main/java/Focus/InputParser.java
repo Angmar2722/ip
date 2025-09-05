@@ -21,6 +21,7 @@ public class InputParser {
         String args = (headTail.length > 1) ? headTail[1].trim() : "";
 
         switch (cmd) {
+
         case "list": return new ListCommand();
         case "todo":
             if (args.isEmpty()) {
@@ -49,7 +50,7 @@ public class InputParser {
                 + "____________________________________________________________");
             }
             return new FindCommand(args);
-    case "bye":
+        case "bye":
             return new ByeCommand();
         default:
             throw new FocusException(String.format("     " +

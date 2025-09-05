@@ -20,9 +20,12 @@ public class Focus {
         ui.showWelcome();
 
         boolean isExit = false;
+
         while (!isExit) {
+
             String fullCommand = ui.readCommand();
             ui.printLine();
+            
             try {
                 FocusCommand cmd = InputParser.parse(fullCommand);
                 cmd.execute(taskList);
@@ -41,6 +44,7 @@ public class Focus {
             } catch (Exception e) {
                 ui.showError("Unexpected error: " + e.getMessage());
             }
+
         }
 
     }
