@@ -13,7 +13,7 @@ public class InputParser {
     public static FocusCommand parse(String input) throws FocusException {
 
         if (input == null || input.trim().isEmpty()) {
-            throw new FocusException("Empty command.");
+            throw new FocusException("     Empty command.");
         }
 
         String[] headTail = input.trim().split("\\s+", 2);
@@ -43,7 +43,13 @@ public class InputParser {
             return new UnmarkCommand(parseIndex(args));
         case "delete":
             return new DeleteCommand(parseIndex(args));
-        case "bye":
+        case "find":
+            if (args.isEmpty()) {
+                throw new FocusException("     Usage: find <keyword>\n"
+                + "____________________________________________________________");
+            }
+            return new FindCommand(args);
+    case "bye":
             return new ByeCommand();
         default:
             throw new FocusException(String.format("     " +
@@ -55,7 +61,8 @@ public class InputParser {
     private static FocusCommand parseDeadline(String args) throws FocusException {
         String[] seg = args.split("/by", 2);
         if (seg.length < 2) {
-            throw new FocusException("     Use: deadline <desc> /by yyyy-MM-dd");
+            throw new FocusException("     Use: deadline <desc> /by yyyy-MM-dd\n" +
+                    "____________________________________________________________");
         }
         return new DeadlineCommand(seg[0].trim(), seg[1].trim());
     }

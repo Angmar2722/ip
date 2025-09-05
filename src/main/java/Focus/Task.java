@@ -29,6 +29,10 @@ public class Task {
         this.isDone = false;
     }
 
+    public String getDescription() {
+        return this.description;
+    }
+
     /**
      * Prints whether task is done along with task name
      * @return A string of form: [whether task done] task name
