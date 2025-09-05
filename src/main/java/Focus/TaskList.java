@@ -14,6 +14,14 @@ public class TaskList {
         System.out.println("    ____________________________________________________________");
     }
 
+    public int size() {
+        return this.tasks.size();
+    }
+
+    public Task getTaskAtIndex(int index) {
+        return this.tasks.get(index);
+    }
+
     public void markTaskAsDone(int i) {
         System.out.println("     Nice! I've marked this task as done:");
         tasks.get(i).markAsDone();
@@ -37,6 +45,23 @@ public class TaskList {
         System.out.println("     Here are the tasks in your list:");
         for (int i = 0; i < this.tasks.size(); i++) {
             System.out.printf("     %d.%s\n", i + 1, this.tasks.get(i));
+        }
+        printLine();
+    }
+
+    public void printMatchingWords(String keyword) {
+        System.out.println("     Here are the matching tasks in your list:");
+        String k = keyword.toLowerCase();
+        int shown = 0;
+        for (int i = 0; i < this.tasks.size(); i++) {
+            Task currentTask = this.tasks.get(i);
+            if (currentTask.getDescription().toLowerCase().contains(k)) {
+                System.out.printf("     %d.%s\n", i + 1, currentTask);
+                shown++;
+            }
+        }
+        if (shown == 0) {
+            System.out.println("     No matching tasks found.");
         }
         printLine();
     }
