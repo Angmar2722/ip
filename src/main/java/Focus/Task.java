@@ -1,7 +1,8 @@
 package Focus;
 
+
 /**
- * Represents a task
+ * Represents a generic task with a description and completion status.
  */
 
 public class Task {
@@ -28,7 +29,7 @@ public class Task {
     public void markNotDone() {
         this.isDone = false;
     }
-
+    
     public String getDescription() {
         return this.description;
     }
@@ -42,6 +43,11 @@ public class Task {
         return "[" + this.getStatusIcon() + "] " + this.description;
     }
 
+    /**
+     * Returns a representation of this task for storage.
+     *
+     * @return String to show in the task list.
+     */
     public String toStorageString() {
         return String.format("| %s | %s ", this.isDone ? "1" : "0", this.description);
     }

@@ -2,6 +2,10 @@ package Focus;
 
 import java.io.IOException;
 
+/**
+ * The main entry point for the Focus application.
+ * Initializes storage, loads tasks, and runs the command loop.
+ */
 public class Focus {
 
     public static void main(String[] args) {

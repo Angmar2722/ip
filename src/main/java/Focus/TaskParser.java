@@ -1,7 +1,17 @@
 package Focus;
 
+/**
+ * Parses a single storage line into a concrete Task.
+ */
 public class TaskParser {
 
+    /**
+     * Parses a storage line into a Task.
+     *
+     * @param unparsedLine One line read from the save file.
+     * @return Parsed task instance.
+     * @throws FocusException If the line is corrupted or the type is unknown.
+     */
     public static Task parse(String unparsedLine) throws FocusException {
 
         String[] parts = unparsedLine.split(" \\| ");
