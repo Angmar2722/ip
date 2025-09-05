@@ -22,6 +22,10 @@ public class Deadline extends Task {
         this.deadline = LocalDate.parse(deadline);
     }
 
+    public LocalDate getDeadline() {
+        return this.deadline;
+    }
+
     @Override
     public String toString() {
         DateTimeFormatter outputDateFormat = DateTimeFormatter.ofPattern("MMM dd yyyy");
@@ -35,7 +39,7 @@ public class Deadline extends Task {
      */
     @Override
     public String toStorageString() {
-        return String.format("D %s| %s", super.toStorageString(), this.deadline.toString());
+        return String.format("D %s | %s", super.toStorageString(), this.deadline.toString());
     }
 
 }

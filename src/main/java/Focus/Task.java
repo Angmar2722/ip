@@ -29,6 +29,10 @@ public class Task {
     public void markNotDone() {
         this.isDone = false;
     }
+
+    public boolean isDone() {
+        return this.isDone;
+    }
     
     public String getDescription() {
         return this.description;
@@ -49,7 +53,7 @@ public class Task {
      * @return String to show in the task list.
      */
     public String toStorageString() {
-        return String.format("| %s | %s ", this.isDone ? "1" : "0", this.description);
+        return String.format("| %s | %s", this.isDone ? "1" : "0", this.description);
     }
 
 }
