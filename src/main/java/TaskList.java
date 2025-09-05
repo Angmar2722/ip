@@ -4,6 +4,10 @@ public class TaskList {
 
     private ArrayList<Task> tasks = new ArrayList<>();
 
+    public ArrayList<Task> getTasks() {
+        return this.tasks;
+    }
+
     public void printLine() {
         System.out.println("    ____________________________________________________________");
     }
@@ -44,12 +48,14 @@ public class TaskList {
         printLine();
     }
 
-    public void addTask(Task task) {
+    public void addTask(Task task, boolean loading) {
         tasks.add(task);
-        System.out.println("     Got it. I've added this task:");
-        System.out.printf("  %s\n", task);
-        System.out.printf("     Now you have %d tasks in the list.\n", this.tasks.size());
-        printLine();
+        if (!loading) {
+            System.out.println("     Got it. I've added this task:");
+            System.out.printf("  %s\n", task);
+            System.out.printf("     Now you have %d tasks in the list.\n", this.tasks.size());
+            printLine();
+        }
     }
 
 }

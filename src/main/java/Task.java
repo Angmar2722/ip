@@ -36,4 +36,8 @@ public class Task {
         return "[" + this.getStatusIcon() + "] " + this.description;
     }
 
+    public String toStorageString() {
+        return String.format("| %s | %s ", this.isDone ? "1" : "0", this.description);
+    }
+
 }
