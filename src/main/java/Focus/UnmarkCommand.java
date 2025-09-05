@@ -1,8 +1,9 @@
-public class MarkCommand extends FocusCommand {
+package Focus;
 
-    private final int userIndex; // 1-based index from user
+public class UnmarkCommand extends FocusCommand {
 
-    public MarkCommand(int userIndex) {
+    private final int userIndex;
+    public UnmarkCommand(int userIndex) {
         this.userIndex = userIndex;
     }
 
@@ -15,7 +16,7 @@ public class MarkCommand extends FocusCommand {
         if (i < 0 || i >= tasks.getTasks().size()) {
             throw new FocusException("Index out of range.");
         }
-        tasks.markTaskAsDone(i);
+        tasks.markTaskAsNotDone(i);
     }
 
 }

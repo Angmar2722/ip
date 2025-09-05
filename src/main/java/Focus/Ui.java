@@ -1,3 +1,5 @@
+package Focus;
+
 import java.util.Scanner;
 
 public class Ui {

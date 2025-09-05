@@ -1,3 +1,5 @@
+package Focus;
+
 public class ByeCommand extends FocusCommand {
 
     @Override

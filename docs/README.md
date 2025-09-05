@@ -1,4 +1,4 @@
-# Focus User Guide
+# Focus.Focus User Guide
 
 // Update the title above to match the actual product name
 

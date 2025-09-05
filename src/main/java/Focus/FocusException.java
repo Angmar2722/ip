@@ -1,5 +1,7 @@
+package Focus;
+
 /**
- * Unchecked error for Focus command handling.
+ * Unchecked error for Focus.Focus command handling.
  */
 public class FocusException extends RuntimeException {
 
