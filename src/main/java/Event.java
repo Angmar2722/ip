@@ -14,4 +14,9 @@ public class Event extends Task{
         return String.format("       [E]%s (from: %s to: %s)", super.toString(), this.eventStart, this.eventEnd);
     }
 
+    @Override
+    public String toStorageString() {
+        return String.format("E %s| %s - %s", super.toStorageString(), this.eventStart, this.eventEnd);
+    }
+
 }
