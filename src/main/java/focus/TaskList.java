@@ -1,4 +1,4 @@
-package Focus;
+package focus;
 
 import java.util.ArrayList;
 
@@ -25,6 +25,9 @@ public class TaskList {
         return this.tasks.size();
     }
 
+    /**
+     * Marks task at given index as done.
+     */
     public void markTaskAsDone(int i) {
 
         System.out.println("     Nice! I've marked this task as done:");
@@ -34,6 +37,9 @@ public class TaskList {
 
     }
 
+    /**
+     * Marks task at given index as not done.
+     */
     public void markTaskAsNotDone(int i) {
 
         System.out.println("     OK, I've marked this task as not done yet:");

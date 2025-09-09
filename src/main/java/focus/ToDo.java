@@ -1,4 +1,4 @@
-package Focus;
+package focus;
 
 /**
  * Represents a ToDo task without any date or time component.

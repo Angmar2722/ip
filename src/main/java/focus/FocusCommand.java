@@ -1,4 +1,4 @@
-package Focus;
+package focus;
 
 /**
  * Represents an executable user command.

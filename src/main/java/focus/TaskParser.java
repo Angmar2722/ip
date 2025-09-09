@@ -1,4 +1,4 @@
-package Focus;
+package focus;
 
 /**
  * Parses a single storage line into a concrete Task.

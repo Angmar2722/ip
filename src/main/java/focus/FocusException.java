@@ -1,4 +1,4 @@
-package Focus;
+package focus;
 
 /**
  * Signals an error in command parsing or execution.

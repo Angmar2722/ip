@@ -1,4 +1,4 @@
-package Focus;
+package focus;
 
 /**
  * Lists all tasks currently in the task list.

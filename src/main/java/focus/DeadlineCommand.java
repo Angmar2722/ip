@@ -1,4 +1,4 @@
-package Focus;
+package focus;
 
 /**
  * Adds a new Deadline task to the task list.
@@ -38,3 +38,4 @@ public class DeadlineCommand extends FocusCommand {
     }
 
 }
+

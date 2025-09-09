@@ -1,4 +1,4 @@
-package Focus;
+package focus;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
