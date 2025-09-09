@@ -1,4 +1,4 @@
-package Focus;
+package focus;
 
 /**
  * Parses raw user input into executable FocusCommand objects.
@@ -7,10 +7,10 @@ public class InputParser {
 
     /** Throw an error for an empty description of a known command. */
     private static void emptyCommandError(String cmd) {
-        throw new FocusException(("     " +
-                        "OOPS!!! The description of a %s cannot be empty.\n    " +
-                        "____________________________________________________________" +
-                cmd));
+        throw new FocusException(("     "
+                    + "OOPS!!! The description of a %s cannot be empty.\n    "
+                    + "____________________________________________________________"
+                    + cmd));
     }
 
     /**
@@ -57,22 +57,22 @@ public class InputParser {
         case "find":
             if (args.isEmpty()) {
                 throw new FocusException("     Usage: find <keyword>\n"
-                + "____________________________________________________________");
+                    + "____________________________________________________________");
             }
             return new FindCommand(args);
         case "bye":
             return new ByeCommand();
         default:
-            throw new FocusException(String.format("     " +
-                            "OOPS!!! I'm sorry, but I don't know what that means :-(\n    " +
-                            "____________________________________________________________todo read book"));
+            throw new FocusException(String.format("     "
+                    + "OOPS!!! I'm sorry, but I don't know what that means :-(\n    "
+                    + "____________________________________________________________"));
         }
     }
 
 
     /**
      * Parses a Deadline command in the form:
-     * deadline <desc> /by yyyy-MM-dd.
+     * deadline [desc] /by yyyy-MM-dd.
      *
      * @param args Argument portion after the deadline keyword.
      * @return A command that adds the deadline.
@@ -81,8 +81,8 @@ public class InputParser {
     private static FocusCommand parseDeadline(String args) throws FocusException {
         String[] seg = args.split("/by", 2);
         if (seg.length < 2) {
-            throw new FocusException("     Use: deadline <desc> /by yyyy-MM-dd\n" +
-                    "____________________________________________________________");
+            throw new FocusException("     Use: deadline <desc> /by yyyy-MM-dd\n"
+                    + "____________________________________________________________");
         }
         return new DeadlineCommand(seg[0].trim(), seg[1].trim());
     }
@@ -90,7 +90,7 @@ public class InputParser {
 
     /**
      * Parses an Event command in the form:
-     * event <desc> /from <start> /to <end>.
+     * event [desc] /from [start] /to [end].
      *
      * @param args Argument portion after the {event} keyword.
      * @return A command that adds the event.
@@ -100,14 +100,14 @@ public class InputParser {
         String[] fromSplit = args.split("/from", 2);
         if (fromSplit.length < 2) {
             throw new FocusException("     Use: event <desc> /from <start> /to <end>\n"
-            + "____________________________________________________________");
+                + "____________________________________________________________");
         }
         String desc = fromSplit[0].trim();
 
         String[] toSplit = fromSplit[1].split("/to", 2);
         if (toSplit.length < 2) {
             throw new FocusException("     Use: event <desc> /from <start> /to <end>\n"
-            + "____________________________________________________________");
+                + "____________________________________________________________");
         }
         String start = toSplit[0].trim();
         String end = toSplit[1].trim();
@@ -125,11 +125,10 @@ public class InputParser {
     private static int parseIndex(String s) throws FocusException {
         if (s.isEmpty()) {
             throw new FocusException("     Index required.");
-
         }
         try {
-            return Integer.parseInt(s.trim()); }
-        catch (NumberFormatException e) {
+            return Integer.parseInt(s.trim());
+        } catch (NumberFormatException e) {
             throw new FocusException("     Index must be a number.");
         }
     }

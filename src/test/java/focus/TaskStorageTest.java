@@ -1,9 +1,11 @@
-package Focus;
+package focus;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.IOException;
 import java.nio.file.Path;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -14,7 +16,7 @@ public class TaskStorageTest {
 
     @Test
     //Save and load produces identical tasks
-    void roundTrip_save_then_load_Test() throws IOException {
+    void saveThenLoad_valid() throws IOException {
 
         Path saveFile = tempDir.resolve("duke.txt");
         TaskStorage storage = new TaskStorage(saveFile.toString());

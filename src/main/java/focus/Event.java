@@ -1,10 +1,10 @@
-package Focus;
+package focus;
 
 /**
  * Represents an event that spans a time period with a start and an end.
  * The start and end are stored in the format used by user input.
  */
-public class Event extends Task{
+public class Event extends Task {
 
     protected String eventStart;
     protected String eventEnd;
@@ -16,7 +16,7 @@ public class Event extends Task{
      * @param eventStart Start text (e.g., code Mon 2pm).
      * @param eventEnd End text (e.g., 4pm).
      */
-    public Event (String description, String eventStart, String eventEnd) {
+    public Event(String description, String eventStart, String eventEnd) {
         super(description);
         this.eventStart = eventStart;
         this.eventEnd = eventEnd;

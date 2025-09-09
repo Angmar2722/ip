@@ -1,4 +1,4 @@
-package Focus;
+package focus;
 
 import java.util.Scanner;
 

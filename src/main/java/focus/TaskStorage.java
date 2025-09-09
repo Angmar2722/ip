@@ -1,18 +1,18 @@
-package Focus;
+package focus;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.BufferedWriter;
-import java.io.IOException;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * Handles loading tasks from a file and saving tasks to a file.
  */
 public class TaskStorage {
 
-    private final String FILEPATH;
+    private final String filePath;
 
     private TaskParser taskParser = new TaskParser();
 
@@ -22,7 +22,7 @@ public class TaskStorage {
      * @param filePath Relative path to the save file (e.g. data/Focus.txt).
      */
     public TaskStorage(String filePath) {
-        this.FILEPATH = filePath;
+        this.filePath = filePath;
     }
 
     /**
@@ -33,7 +33,7 @@ public class TaskStorage {
      */
     public void saveTasks(TaskList taskList) throws IOException {
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILEPATH))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             for (Task task : taskList.getTasks()) {
                 writer.write(task.toStorageString());
                 writer.newLine();
@@ -54,13 +54,13 @@ public class TaskStorage {
     public TaskList loadTasks() throws IOException {
 
         TaskList taskList = new TaskList();
-        File storedFiled = new File(FILEPATH);
+        File storedFiled = new File(filePath);
 
         if (!storedFiled.exists()) {
             return taskList;
         }
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILEPATH))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 taskList.addTask(TaskParser.parse(line), true);

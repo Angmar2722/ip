@@ -1,4 +1,4 @@
-package Focus;
+package focus;
 
 /**
  * Exits the application.

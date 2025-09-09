@@ -1,26 +1,28 @@
-package Focus;
+package focus;
 
 /**
- * Marks a task as done.
+ * Marks a task as not done.
  */
-public class MarkCommand extends FocusCommand {
+public class UnmarkCommand extends FocusCommand {
 
-    private final int userIndex; // 1-based index from user
+    private final int userIndex;
 
     /**
-     * Constructs a MarkCommand.
+     * Constructs an {@code UnmarkCommand}.
      *
-     * @param userIndex One-based index of the task (inputted by the user) to mark.
+     * @param userIndex One-based index of the task (inputted by the user) to unmark.
      */
-    public MarkCommand(int userIndex) {
+    public UnmarkCommand(int userIndex) {
         this.userIndex = userIndex;
     }
 
     @Override
-    public boolean isMutating() { return true; }
+    public boolean isMutating() {
+        return true;
+    }
 
     /**
-     * Executes the command by marking the task as done.
+     * Executes the command by marking the task as not done.
      *
      * @param tasks Task list to update.
      * @throws FocusException If the index is out of range.
@@ -31,7 +33,7 @@ public class MarkCommand extends FocusCommand {
         if (i < 0 || i >= tasks.getTasks().size()) {
             throw new FocusException("Index out of range.");
         }
-        tasks.markTaskAsDone(i);
+        tasks.markTaskAsNotDone(i);
     }
 
 }

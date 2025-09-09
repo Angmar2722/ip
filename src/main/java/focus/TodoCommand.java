@@ -1,4 +1,4 @@
-package Focus;
+package focus;
 
 /**
  * Adds a new ToDo task to the task list.

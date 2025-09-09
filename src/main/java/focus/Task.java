@@ -1,4 +1,4 @@
-package Focus;
+package focus;
 
 
 /**
@@ -33,7 +33,7 @@ public class Task {
     public boolean isDone() {
         return this.isDone;
     }
-    
+
     public String getDescription() {
         return this.description;
     }

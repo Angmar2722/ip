@@ -1,4 +1,4 @@
-package Focus;
+package focus;
 
 /**
  * Adds a new Event task to the task list.
@@ -24,7 +24,9 @@ public class EventCommand extends FocusCommand {
     }
 
     @Override
-    public boolean isMutating() { return true; }
+    public boolean isMutating() {
+        return true;
+    }
 
     /**
      * Executes the command by adding the event to the list.

@@ -1,4 +1,4 @@
-package Focus;
+package focus;
 
 /**
  * Finds and lists tasks whose description contains a given keyword (case-insensitive).

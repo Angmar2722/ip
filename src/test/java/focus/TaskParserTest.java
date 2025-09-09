@@ -1,15 +1,18 @@
-package Focus;
+package focus;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
+
 import org.junit.jupiter.api.Test;
 
 public class TaskParserTest {
 
     @Test
     // Parse Deadline storage line with correct date format
-    void parseDeadline_Test() throws Exception {
+    void parseDeadline_valid() throws Exception {
         Task t = TaskParser.parse("D | 1 | submit report | 2025-09-10");
         assertTrue(t instanceof Deadline);
         assertEquals("submit report", t.getDescription());
@@ -21,7 +24,7 @@ public class TaskParserTest {
 
     @Test
     // Parse Event storage line with start - end
-    void parseEvent_Test() throws Exception {
+    void parseEvent_valid() throws Exception {
         Task t = TaskParser.parse("E | 0 | project meeting | Mon 2pm - 4pm");
         assertTrue(t instanceof Event);
         assertEquals("project meeting", t.getDescription());

@@ -1,4 +1,4 @@
-package Focus;
+package focus;
 
 import java.io.IOException;
 
@@ -29,7 +29,7 @@ public class Focus {
 
             String fullCommand = ui.readCommand();
             ui.printLine();
-            
+
             try {
                 FocusCommand cmd = InputParser.parse(fullCommand);
                 cmd.execute(taskList);
