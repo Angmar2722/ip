@@ -46,7 +46,7 @@ public class TaskStorage {
 
     /**
      * Loads tasks from the storage file.
-     * Missing files and folders are handled gracefully by returning an empty list.
+     * Missing files and folders are handled by returning an empty list.
      *
      * @return A TaskList containing the loaded tasks.
      * @throws IOException If an I/O error occurs while reading.

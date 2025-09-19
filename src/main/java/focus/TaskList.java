@@ -26,13 +26,36 @@ public class TaskList {
     }
 
     /**
-     * Marks task at given index as done.
+     * Marks task at given single or multiple index as done.
      */
-    public void markTaskAsDone(int i) {
+    public void markTasks(int... userIndexes) {
 
-        System.out.println("     Nice! I've marked this task as done:");
-        tasks.get(i).markAsDone();
-        System.out.printf("       %s\n", tasks.get(i));
+        if (userIndexes == null || userIndexes.length == 0) {
+            throw new FocusException("     Index required.");
+        }
+
+        System.out.println("     Nice! I've marked these tasks as done:");
+
+        if (userIndexes.length == 1) {
+            int index = userIndexes[0] - 1;
+            if (index < 0 || index >= this.tasks.size()) {
+                throw new FocusException("     Index out of range: " + index);
+            }
+            tasks.get(userIndexes[0] - 1).markAsDone(); // Input index is one-indexes
+            System.out.printf("       %s\n", tasks.get(index));
+            printLine();
+            return;
+        }
+
+        for (int userIndex : userIndexes) {
+            int i = userIndex - 1; // convert 1-based to 0-based
+            if (i < 0 || i >= this.tasks.size()) {
+                throw new FocusException("     Index out of range: " + userIndex);
+            }
+            tasks.get(i).markAsDone();
+            System.out.printf("       %s\n", tasks.get(i));
+        }
+
         printLine();
 
     }
@@ -95,22 +118,6 @@ public class TaskList {
     }
 
     /**
-     * Deletes a task at the given zero-based index.
-     *
-     * @param i Zero-based index of the task to delete.
-     */
-    public void deleteTask(int i) {
-
-        String deletedTaskString = this.tasks.get(i).toString();
-        this.tasks.remove(i);
-        System.out.println("     Noted. I've removed this task:");
-        System.out.printf("       %s\n", deletedTaskString);
-        System.out.printf("     Now you have %d tasks in the list.\n", this.tasks.size());
-        printLine();
-
-    }
-
-    /**
      * Adds a task to the list.
      *
      * @param task Task to add.
@@ -127,6 +134,22 @@ public class TaskList {
             System.out.printf("     Now you have %d tasks in the list.\n", this.tasks.size());
             printLine();
         }
+
+    }
+
+    /**
+     * Deletes a task at the given zero-based index.
+     *
+     * @param i Zero-based index of the task to delete.
+     */
+    public void deleteTask(int i) {
+
+        String deletedTaskString = this.tasks.get(i).toString();
+        this.tasks.remove(i);
+        System.out.println("     Noted. I've removed this task:");
+        System.out.printf("       %s\n", deletedTaskString);
+        System.out.printf("     Now you have %d tasks in the list.\n", this.tasks.size());
+        printLine();
 
     }
 
