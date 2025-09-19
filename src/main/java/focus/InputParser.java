@@ -1,5 +1,8 @@
 package focus;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Parses raw user input into executable FocusCommand objects.
  */
@@ -49,7 +52,9 @@ public class InputParser {
             }
             return parseEvent(args);
         case "mark":
-            return new MarkCommand(parseIndex(args));
+            List<Integer> indexes = parseIndexes(args); // args can be "3" or "1 2 3"
+            int[] varargs = indexes.stream().mapToInt(Integer::intValue).toArray();
+            return new MarkCommand(varargs);
         case "unmark":
             return new UnmarkCommand(parseIndex(args));
         case "delete":
@@ -131,6 +136,29 @@ public class InputParser {
         } catch (NumberFormatException e) {
             throw new FocusException("     Index must be a number.");
         }
+    }
+
+    /**
+     * Parses a one-based single or multi-index from text.
+     *
+     * @param s Text that should contain one or more positive integers.
+     * @return Parsed one-based index or multi-index (e.g. "1" or "1 2 3") stored in Integer list.
+     * @throws FocusException If the text is empty or not a number.
+     */
+    private static List<Integer> parseIndexes(String s) {
+        if (s == null || s.isBlank()) {
+            throw new FocusException("     Index required.");
+        }
+        String[] stringList = s.trim().split("\\s+"); // supports "1 2 3" (any whitespace)
+        List<Integer> toRet = new ArrayList<>(stringList.length);
+        for (String t : stringList) {
+            try {
+                toRet.add(Integer.parseInt(t));
+            } catch (NumberFormatException e) {
+                throw new FocusException("     Indices must be numbers (got: \"" + t + "\").");
+            }
+        }
+        return toRet;
     }
 
 }
