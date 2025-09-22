@@ -57,7 +57,7 @@ It combines the **efficiency of keyboard commands** with the **friendliness of a
 
 ### Viewing Tasks
 - **List all**: `list`  
-  Shows all tasks with status icons (task marked done has a X next to it).
+  Shows all tasks with status icons (tasks marked done have a X next to them).
 
 ---
 
