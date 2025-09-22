@@ -24,7 +24,7 @@ public class InputParser {
     public static FocusCommand parse(String input) throws FocusException {
 
         if (input == null || input.trim().isEmpty()) {
-            throw new FocusException("     Empty command. Please type in a command!");
+            throw new FocusException("     Empty command. Please type in a command for me to focus on!");
         }
 
         String[] headTail = input.trim().split("\\s+", 2);
