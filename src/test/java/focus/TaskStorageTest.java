@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -18,14 +20,19 @@ public class TaskStorageTest {
     //Save and load produces identical tasks
     void saveThenLoad_valid() throws IOException {
 
+        DateTimeFormatter inputFormat =
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"); // User input and storage format for events and deadline
+
         Path saveFile = tempDir.resolve("duke.txt");
         TaskStorage storage = new TaskStorage(saveFile.toString());
 
         // Build list
         TaskList list = new TaskList();
         list.addTask(new ToDo("read book"), false);
-        list.addTask(new Deadline("submit report", "2025-09-10"), false);
-        list.addTask(new Event("project meeting", "Mon 2pm", "4pm"), false);
+        list.addTask(new Deadline("submit report", LocalDateTime.parse("2025-09-10 1159", inputFormat)), false);
+        list.addTask(new Event("project meeting",
+                LocalDateTime.parse("2025-09-10 1159", inputFormat), LocalDateTime.parse("2025-09-11 1159",
+                inputFormat)), false);
 
         storage.saveTasks(list);
 
