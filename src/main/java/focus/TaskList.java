@@ -54,13 +54,34 @@ public class TaskList {
     }
 
     /**
-     * Marks task at given index as not done.
+     * Marks task at given single or multiple index as done.
      */
-    public void markTaskAsNotDone(int i) {
+    public void unmarkTasks(int... userIndexes) {
 
-        System.out.println("     OK, I've marked this task as not done yet:");
-        this.tasks.get(i).markNotDone();
-        System.out.printf("       %s\n", tasks.get(i));
+        if (userIndexes == null || userIndexes.length == 0) {
+            throw new FocusException("     Index required.");
+        }
+
+        System.out.println("     Nice! I've marked these tasks as not done:");
+
+        if (userIndexes.length == 1) {
+            int index = userIndexes[0] - 1;
+            if (index < 0 || index >= this.tasks.size()) {
+                throw new FocusException("     Index out of range: " + index);
+            }
+            tasks.get(userIndexes[0] - 1).markNotDone(); // Input index is one-indexes
+            System.out.printf("       %s\n", tasks.get(index));
+            return;
+        }
+
+        for (int userIndex : userIndexes) {
+            int i = userIndex - 1; // convert 1-based to 0-based
+            if (i < 0 || i >= this.tasks.size()) {
+                throw new FocusException("     Index out of range: " + userIndex);
+            }
+            tasks.get(i).markNotDone();
+            System.out.printf("       %s\n", tasks.get(i));
+        }
 
     }
 
