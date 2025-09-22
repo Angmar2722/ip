@@ -24,7 +24,7 @@ public class TaskList {
     /**
      * Marks task at given single or multiple index as done.
      */
-    public void markTasks(int... userIndexes) {
+    public void markTasks(int... userIndexes) throws FocusException {
 
         if (userIndexes == null || userIndexes.length == 0) {
             throw new FocusException("     Index required.");

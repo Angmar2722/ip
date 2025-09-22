@@ -3,7 +3,7 @@ package focus;
 /**
  * Signals an error in command parsing or execution.
  */
-public class FocusException extends RuntimeException {
+public class FocusException extends Exception {
 
 
     /**
