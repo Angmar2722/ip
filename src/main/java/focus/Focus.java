@@ -41,7 +41,7 @@ public class Focus {
      * @return Returns the greeting banner.
      */
     public String getGreeting() {
-        return "    Hello! I'm Focus\n" + "    What can I do for you?";
+        return "    Hello! I'm Focus\n" + "    I am laser focused on serving you. Let me know how may I be of service?";
     }
 
     /**
