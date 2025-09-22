@@ -16,6 +16,9 @@ public class ToDo extends Task {
 
     @Override
     public String toString() {
+        if (isTagged()) {
+            return String.format("       [T]%s %s", super.toString(), getTag().toString());
+        }
         return String.format("       [T]%s", super.toString());
     }
 
@@ -26,6 +29,9 @@ public class ToDo extends Task {
      */
     @Override
     public String toStorageString() {
+        if (isTagged()) {
+            return String.format("T %s | %s", super.toStorageString(), getTag().toString());
+        }
         return String.format("T %s", super.toStorageString());
     }
 

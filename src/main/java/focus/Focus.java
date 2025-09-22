@@ -91,6 +91,7 @@ public class Focus {
             return fallbackMessage;
         }
 
+        this.lastCallWasFocusException = true;
         return "Something went wrong. Could not perform text I/O!";
 
     }

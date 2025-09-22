@@ -77,6 +77,11 @@ public class InputParser {
             return new FindCommand(args);
         case "bye":
             return new ByeCommand();
+        case "tag":
+            if (args.isEmpty()) {
+                emptyCommandError(cmd);
+            }
+            return parseTag(args);
         default:
             throw new FocusException("OOPS!!! I'm sorry, but I don't know what that means :-(\n    ");
         }
@@ -197,6 +202,64 @@ public class InputParser {
             }
         }
         return toRet;
+    }
+
+    /**
+     * Parses a Tag command in the form:
+     *   tag [index] [desc]
+     * where desc must be a single token starting with '#', e.g. "#hello".
+     *
+     * Examples:
+     *   tag 1 #work
+     *
+     * @param args The argument portion after the "tag" keyword, e.g. "1 #hello".
+     * @return A TagCommand carrying (index, "#tag").
+     * @throws FocusException If the arguments are missing or malformed.
+     */
+    private static FocusCommand parseTag(String args) throws FocusException {
+        // Basic presence check
+        if (args == null || args.trim().isEmpty()) {
+            throw new FocusException("     Usage: tag <Task index> #tag");
+        }
+
+        // Split on whitespace
+        final String[] toks = args.trim().split("\\s+");
+        if (toks.length != 2) {
+            throw new FocusException("     Usage: tag <Task index> #tag (exactly one tag)");
+        }
+
+        // 1) Parse index
+        final String indexStr = toks[0];
+        final int index;
+        try {
+            index = Integer.parseInt(indexStr);
+            if (index <= 0) {
+                throw new NumberFormatException();
+            }
+        } catch (NumberFormatException e) {
+            throw new FocusException("     Invalid index: " + indexStr);
+        }
+
+        // 2) Parse tag token (must start with '#', single token)
+        final String tagToken = toks[1];
+
+        if (!tagToken.startsWith("#")) {
+            throw new FocusException("     Tag must start with '#', e.g., #hello");
+        }
+
+        final String tagBody = tagToken.substring(1).trim();
+        if (tagBody.isEmpty()) {
+            throw new FocusException("     Tag cannot be empty. Try: #hello");
+        }
+
+        // Allow letters, digits, underscore and hyphen; 1..20 chars
+        if (!tagBody.matches("[A-Za-z0-9_-]{1,20}")) {
+            throw new FocusException("     Invalid tag: " + tagToken
+                    + " (allowed: letters, digits, '_' or '-', 1–20 chars)");
+        }
+
+        return new TagCommand(index - 1, tagBody);
+
     }
 
 }

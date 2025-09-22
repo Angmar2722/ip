@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+
+
 /**
  * Parses a single storage line into a concrete Task.
  */
@@ -31,6 +33,11 @@ public class TaskParser {
         char firstChar = parts[0].charAt(0);
         boolean isDone = parts[1].equals("1");
         String description = parts[2];
+
+        // compute the minimum columns without a tag and detect an optional tag column
+        final int minWithoutTag = (firstChar == 'T') ? 3 : 4;
+        final boolean hasTagColumn = parts.length == (minWithoutTag + 1);
+        final String tagColumn = hasTagColumn ? parts[parts.length - 1].trim() : null;
 
         Task toRet;
 
@@ -95,6 +102,25 @@ public class TaskParser {
 
         if (isDone) {
             toRet.markAsDone();
+        }
+
+        if (hasTagColumn) {
+            // Require leading '#'
+            if (tagColumn.isEmpty() || !tagColumn.startsWith("#")) {
+                throw new FocusException("     Corrupted tag column: " + tagColumn);
+            }
+            String body = tagColumn.substring(1).trim();
+            if (body.isEmpty()) {
+                throw new FocusException("     Tag cannot be empty (e.g., #work).");
+            }
+            if (!body.matches("[A-Za-z0-9_-]{1,20}")) {
+                throw new FocusException("     Invalid tag: " + tagColumn
+                        + " (allowed: letters, digits, '_' or '-', 1–20 chars)");
+            }
+            toRet.setTag(new Tag(-1, body));
+        } else if (parts.length > minWithoutTag + 1) {
+            // More columns than expected (+1 for tag) => malformed line
+            throw new FocusException("     Corrupted line (too many columns): " + unparsedLine);
         }
 
         return toRet;
