@@ -63,7 +63,11 @@ public class TaskStorage {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                taskList.addTask(TaskParser.parse(line), true);
+                try {
+                    taskList.addTask(TaskParser.parse(line), true);
+                } catch (FocusException fe) {
+                    System.err.println("Error loading tasks: " + fe.getMessage());
+                }
             }
         } catch (IOException e) {
             System.err.println(e.getMessage());
