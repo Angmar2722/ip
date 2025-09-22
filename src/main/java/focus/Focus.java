@@ -1,6 +1,8 @@
 package focus;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 
 /**
  * The main entry point for the Focus application.
@@ -8,49 +10,90 @@ import java.io.IOException;
  */
 public class Focus {
 
-    public static void main(String[] args) {
+    private final TaskList taskList;
+    private final TaskStorage storage;
+    private boolean exitRequested = false;
+
+    /**
+     * Load tasks into Focus.
+     */
+    public Focus() {
 
         Ui ui = new Ui();
-        TaskStorage storage = new TaskStorage("data/Focus.txt");
-        TaskList taskList;
+        this.storage = new TaskStorage("data/Focus.txt");
+        TaskList tl;
 
         try {
-            taskList = storage.loadTasks();
+            tl = storage.loadTasks();
         } catch (IOException e) {
             ui.showError("No stored task list found!");
-            taskList = new TaskList();
+            tl = new TaskList();
         }
 
-        ui.showWelcome();
+        this.taskList = tl;
 
-        boolean isExit = false;
+    }
 
-        while (!isExit) {
+    /**
+     * Returns the greeting banner.
+     *
+     * @return Returns the greeting banner.
+     */
+    public String getGreeting() {
+        return "    Hello! I'm Focus\n" + "    What can I do for you?";
+    }
 
-            String fullCommand = ui.readCommand();
-            ui.printLine();
+    /**
+     * Parse + run a command against the in-memory TaskList and persist if needed.
+     * Returns whatever the respective command prints (captured from stdout).
+     */
+    public String getResponse(String input) {
 
-            try {
-                FocusCommand cmd = InputParser.parse(fullCommand);
-                cmd.execute(taskList);
+        PrintStream originalOut = System.out;
+        ByteArrayOutputStream capture = new ByteArrayOutputStream();
+        PrintStream tempStream = new PrintStream(capture);
+        System.setOut(tempStream);
 
-                if (cmd.isMutating()) {
-                    try {
-                        storage.saveTasks(taskList);
-                    } catch (IOException ioe) {
-                        ui.showError("Error saving taskList.");
-                    }
+        String fallbackMessage = null;
+
+        try {
+
+            FocusCommand cmd = InputParser.parse(input);
+            cmd.execute(taskList);
+            if (cmd.isMutating()) {
+                try {
+                    storage.saveTasks(taskList);
+                } catch (IOException ioe) {
+                    fallbackMessage = "Error saving task list.";
                 }
-
-                isExit = cmd.isExit();
-            } catch (FocusException fe) {
-                ui.showError(fe.getMessage());
-            } catch (Exception e) {
-                ui.showError("Unexpected error: " + e.getMessage());
             }
 
+            this.exitRequested = cmd.isExit();
+
+        } catch (FocusException fe) {
+            fallbackMessage = fe.getMessage();
+        } catch (Exception e) {
+            fallbackMessage = "Unexpected error: " + e.getMessage();
+        } finally {
+            tempStream.flush();
+            System.setOut(originalOut);
         }
 
+        String printed = capture.toString().trim();
+        if (!printed.isEmpty()) {
+            return printed;
+        }
+        if (fallbackMessage != null) {
+            return fallbackMessage;
+        }
+
+        return "Something went wrong. Could not perform text I/O!";
+
+    }
+
+    /** Lets the controller close the app after an exit command. */
+    public boolean isExitRequested() {
+        return this.exitRequested;
     }
 
 }

@@ -12,7 +12,6 @@ public class InputParser {
     private static void emptyCommandError(String cmd) {
         throw new FocusException(("     "
                     + "OOPS!!! The description of a %s cannot be empty.\n    "
-                    + "____________________________________________________________"
                     + cmd));
     }
 
@@ -61,16 +60,14 @@ public class InputParser {
             return new DeleteCommand(parseIndex(args));
         case "find":
             if (args.isEmpty()) {
-                throw new FocusException("     Usage: find <keyword>\n"
-                    + "____________________________________________________________");
+                throw new FocusException("     Usage: find <keyword>\n");
             }
             return new FindCommand(args);
         case "bye":
             return new ByeCommand();
         default:
             throw new FocusException(String.format("     "
-                    + "OOPS!!! I'm sorry, but I don't know what that means :-(\n    "
-                    + "____________________________________________________________"));
+                    + "OOPS!!! I'm sorry, but I don't know what that means :-(\n    "));
         }
     }
 
@@ -86,8 +83,7 @@ public class InputParser {
     private static FocusCommand parseDeadline(String args) throws FocusException {
         String[] seg = args.split("/by", 2);
         if (seg.length < 2) {
-            throw new FocusException("     Use: deadline <desc> /by yyyy-MM-dd\n"
-                    + "____________________________________________________________");
+            throw new FocusException("     Use: deadline <desc> /by yyyy-MM-dd\n");
         }
         return new DeadlineCommand(seg[0].trim(), seg[1].trim());
     }
@@ -104,15 +100,13 @@ public class InputParser {
     private static FocusCommand parseEvent(String args) throws FocusException {
         String[] fromSplit = args.split("/from", 2);
         if (fromSplit.length < 2) {
-            throw new FocusException("     Use: event <desc> /from <start> /to <end>\n"
-                + "____________________________________________________________");
+            throw new FocusException("     Use: event <desc> /from <start> /to <end>\n");
         }
         String desc = fromSplit[0].trim();
 
         String[] toSplit = fromSplit[1].split("/to", 2);
         if (toSplit.length < 2) {
-            throw new FocusException("     Use: event <desc> /from <start> /to <end>\n"
-                + "____________________________________________________________");
+            throw new FocusException("     Use: event <desc> /from <start> /to <end>\n");
         }
         String start = toSplit[0].trim();
         String end = toSplit[1].trim();
