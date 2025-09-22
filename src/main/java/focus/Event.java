@@ -32,6 +32,11 @@ public class Event extends Task {
     @Override
     public String toString() {
         DateTimeFormatter outputDateFormat = DateTimeFormatter.ofPattern("d MMMM yyyy h:mm a");
+        if (isTagged()) {
+            return String.format("       [E]%s (from: %s to: %s) %s", super.toString(),
+                    this.eventStart.format(outputDateFormat),
+                    this.eventEnd.format(outputDateFormat), getTag().toString());
+        }
         return String.format("       [E]%s (from: %s to: %s)", super.toString(),
                 this.eventStart.format(outputDateFormat), this.eventEnd.format(outputDateFormat));
     }
@@ -43,6 +48,10 @@ public class Event extends Task {
      */
     @Override
     public String toStorageString() {
+        if (isTagged()) {
+            return String.format("E %s | %s - %s | %s", super.toStorageString(),
+                    this.eventStart.format(inputFormat), this.eventEnd.format(inputFormat), getTag().toString());
+        }
         return String.format("E %s | %s - %s", super.toStorageString(),
                 this.eventStart.format(inputFormat), this.eventEnd.format(inputFormat));
     }

@@ -9,6 +9,8 @@ public class Task {
 
     protected String description;
     protected boolean isDone;
+    private boolean isTagged = false;
+    private Tag tag;
 
     /**
      * Initializes task with task description and whether the task is done
@@ -28,6 +30,20 @@ public class Task {
 
     public void markNotDone() {
         this.isDone = false;
+    }
+
+    public boolean isTagged() {
+        return this.isTagged;
+    }
+
+    public void setTag(Tag tag) {
+        System.out.println("     Nice! I have tagged this task!");
+        this.isTagged = true;
+        this.tag = tag;
+    }
+
+    public Tag getTag() {
+        return this.tag;
     }
 
     public boolean isDone() {

@@ -22,6 +22,7 @@ public class TaskStorage {
      * @param filePath Relative path to the save file (e.g. data/Focus.txt).
      */
     public TaskStorage(String filePath) {
+        ensureDataDirExists("./data");
         this.filePath = filePath;
     }
 
@@ -88,6 +89,23 @@ public class TaskStorage {
             System.out.println("Could not load task list!");
         }
 
+    }
+
+    /**
+     * Ensures data directory will always exist during TaskStorage instantiation.
+     */
+    private void ensureDataDirExists(String directoryString) {
+        File dataDir = new File(directoryString);
+        if (!dataDir.exists()) {
+            boolean created = dataDir.mkdirs();
+            if (created) {
+                System.out.println("Directory created successfully");
+            } else {
+                System.out.println("Failed to create directory");
+            }
+        } else {
+            System.out.println("Directory already exists");
+        }
     }
 
 }

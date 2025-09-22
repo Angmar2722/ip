@@ -6,7 +6,7 @@ import java.time.format.DateTimeParseException;
 
 /**
  * Adds a new Deadline task to the task list.
- * The date is expected to be input in yyyy-MM-dd format.
+ * The date is expected to be input in yyyy-MM-dd HHmm format.
  */
 
 public class DeadlineCommand extends FocusCommand {
@@ -23,7 +23,7 @@ public class DeadlineCommand extends FocusCommand {
      * Note: Used ChatGPT here to modify DeadlineCommand to handle local date time formats
      *
      * @param description Description of the deadline.
-     * @param deadline Due date in yyyy-MM-dd format.
+     * @param deadline Due date in yyyy-MM-dd HHmm format.
      */
     public DeadlineCommand(String description, String deadline) throws FocusException {
         this.description = description;
