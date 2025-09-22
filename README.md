@@ -1,6 +1,6 @@
 # 🔎 Focus — Task Management Assistant 🔎
 
-![Ui Screenshot](docs/Ui.png)
+![Ui Screenshot](/docs/Ui.png)
 
 Focus is a lightweight desktop app for managing tasks, built for speed and clarity.  
 It combines the **efficiency of keyboard commands** with the **friendliness of a GUI chatbot**, making task management both fast and enjoyable.
@@ -10,11 +10,12 @@ It combines the **efficiency of keyboard commands** with the **friendliness of a
 ## Table of Contents
 - [Getting Started](#getting-started)
 - [How to Use](#how-to-use)
-   - [Adding Tasks](#adding-tasks)
-   - [Viewing Tasks](#viewing-tasks)
-   - [Updating Tasks](#updating-tasks)
-   - [Finding & Deleting](#finding--deleting)
-   - [Exiting](#exiting)
+  - [Adding Tasks](#adding-tasks)
+  - [Viewing Tasks](#viewing-tasks)
+  - [Updating Tasks](#updating-tasks)
+  - [Finding & Deleting](#finding--deleting)
+  - [Tagging](#tagging)
+  - [Exiting](#exiting)
 - [Example Session](#example-session)
 - [Error Handling](#-error-handling)
 - [Storage Persistence](#storage-persistence)
@@ -57,7 +58,7 @@ It combines the **efficiency of keyboard commands** with the **friendliness of a
 
 ### Viewing Tasks
 - **List all**: `list`  
-  Shows all tasks with status icons (task marked done has a X next to it).
+  Shows all tasks with status icons (tasks marked done have a X next to them).
 
 ---
 
@@ -69,6 +70,12 @@ It combines the **efficiency of keyboard commands** with the **friendliness of a
   mark 1 2 3
   unmark 1 2 3
   ```
+
+---
+
+### Tagging
+- **Tag**: `tag INDEX #DESCRIPTION`
+  Currently limited to one tag per task.
 
 ---
 
@@ -122,6 +129,7 @@ Worry not, Focus will guide you:
 | Unmark   | `unmark INDEX [INDEX …]` | `unmark 2` |
 | Delete   | `delete INDEX` | `delete 3` |
 | Find     | `find KEYWORD` | `find report` |
+| Find     | `tag INDEX #DESCRIPTION` | `tag 2 #meeting` |
 | Exit     | `bye` | — |
 
 ---

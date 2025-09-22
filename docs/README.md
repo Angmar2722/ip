@@ -73,7 +73,7 @@ It combines the **efficiency of keyboard commands** with the **friendliness of a
 
 ---
 
-### Tagging tasks
+### Tagging
 - **Tag**: `tag INDEX #DESCRIPTION`
   Currently limited to one tag per task.
 
