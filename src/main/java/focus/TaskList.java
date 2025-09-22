@@ -13,10 +13,6 @@ public class TaskList {
         return this.tasks;
     }
 
-    public void printLine() {
-        System.out.println("    ____________________________________________________________");
-    }
-
     public Task get(int i) {
         return this.tasks.get(i);
     }
@@ -43,7 +39,6 @@ public class TaskList {
             }
             tasks.get(userIndexes[0] - 1).markAsDone(); // Input index is one-indexes
             System.out.printf("       %s\n", tasks.get(index));
-            printLine();
             return;
         }
 
@@ -56,8 +51,6 @@ public class TaskList {
             System.out.printf("       %s\n", tasks.get(i));
         }
 
-        printLine();
-
     }
 
     /**
@@ -68,7 +61,6 @@ public class TaskList {
         System.out.println("     OK, I've marked this task as not done yet:");
         this.tasks.get(i).markNotDone();
         System.out.printf("       %s\n", tasks.get(i));
-        printLine();
 
     }
 
@@ -79,7 +71,6 @@ public class TaskList {
 
         if (this.tasks.isEmpty()) {
             System.out.println("     No tasks in your list.");
-            printLine();
             return;
         }
 
@@ -87,8 +78,6 @@ public class TaskList {
         for (int i = 0; i < this.tasks.size(); i++) {
             System.out.printf("     %d.%s\n", i + 1, this.tasks.get(i));
         }
-
-        printLine();
 
     }
 
@@ -113,8 +102,6 @@ public class TaskList {
             System.out.println("     No matching tasks found.");
         }
 
-        printLine();
-
     }
 
     /**
@@ -132,7 +119,6 @@ public class TaskList {
             System.out.println("     Got it. I've added this task:");
             System.out.printf("  %s\n", task);
             System.out.printf("     Now you have %d tasks in the list.\n", this.tasks.size());
-            printLine();
         }
 
     }
@@ -149,7 +135,6 @@ public class TaskList {
         System.out.println("     Noted. I've removed this task:");
         System.out.printf("       %s\n", deletedTaskString);
         System.out.printf("     Now you have %d tasks in the list.\n", this.tasks.size());
-        printLine();
 
     }
 
