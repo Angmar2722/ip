@@ -1,9 +1,14 @@
 package focus;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 /**
  * Parses a single storage line into a concrete Task.
  */
 public class TaskParser {
+
 
     /**
      * Parses a storage line into a Task.
@@ -13,6 +18,9 @@ public class TaskParser {
      * @throws FocusException If the line is corrupted or the type is unknown.
      */
     public static Task parse(String unparsedLine) throws FocusException {
+
+        DateTimeFormatter inputFormat =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"); // User input and storage format for events and deadline
 
         String[] parts = unparsedLine.split(" \\| ");
 
@@ -39,7 +47,17 @@ public class TaskParser {
                 throw new FocusException("Deadline missing 'by': " + unparsedLine);
             }
 
-            toRet = new Deadline(description, parts[3].trim());
+            String deadlineBy = parts[3].trim();
+            LocalDateTime formattedDeadlineBy;
+
+            try {
+                formattedDeadlineBy = LocalDateTime.parse(deadlineBy, inputFormat);
+            } catch (DateTimeParseException ex) {
+                throw new FocusException("     Invalid date-time. Use yyyy-MM-dd HHmm (e.g., 2025-10-01 0930).");
+            }
+
+            toRet = new Deadline(description, formattedDeadlineBy);
+
             break;
 
         case 'E':
@@ -56,8 +74,17 @@ public class TaskParser {
 
             String eventStart = times[0].trim();
             String eventEnd = times[1].trim();
+            LocalDateTime formattedEventStart;
+            LocalDateTime formattedEventEnd;
 
-            toRet = new Event(description, eventStart, eventEnd);
+            try {
+                formattedEventStart = LocalDateTime.parse(eventStart, inputFormat);
+                formattedEventEnd = LocalDateTime.parse(eventEnd, inputFormat);
+            } catch (DateTimeParseException ex) {
+                throw new FocusException("     Invalid date-time. Use yyyy-MM-dd HHmm (e.g., 2025-10-01 0930).");
+            }
+
+            toRet = new Event(description, formattedEventStart, formattedEventEnd);
 
             break;
 

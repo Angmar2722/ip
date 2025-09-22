@@ -10,9 +10,8 @@ public class InputParser {
 
     /** Throw an error for an empty description of a known command. */
     private static void emptyCommandError(String cmd) throws FocusException {
-        throw new FocusException(("     "
-                    + "OOPS!!! The description of a %s cannot be empty.\n    "
-                    + cmd));
+        throw new FocusException(String.format(
+                "     OOPS!!! The description of a %s command cannot be empty.\n    ", cmd));
     }
 
     /**
@@ -25,7 +24,7 @@ public class InputParser {
     public static FocusCommand parse(String input) throws FocusException {
 
         if (input == null || input.trim().isEmpty()) {
-            throw new FocusException("     Empty command.");
+            throw new FocusException("     Empty command. Please type in a command!");
         }
 
         String[] headTail = input.trim().split("\\s+", 2);
@@ -51,16 +50,25 @@ public class InputParser {
             }
             return parseEvent(args);
         case "mark":
+            if (args.isEmpty()) {
+                emptyCommandError(cmd);
+            }
             List<Integer> indexes = parseIndexes(args); // args can be "3" or "1 2 3"
             assert indexes.stream().allMatch(i -> i > 0) : "Indexes must be 1-based positive integers";
             int[] varargs = indexes.stream().mapToInt(Integer::intValue).toArray();
             return new MarkCommand(varargs);
         case "unmark":
+            if (args.isEmpty()) {
+                emptyCommandError(cmd);
+            }
             indexes = parseIndexes(args); // args can be "3" or "1 2 3"
             assert indexes.stream().allMatch(i -> i > 0) : "Indexes must be 1-based positive integers";
             varargs = indexes.stream().mapToInt(Integer::intValue).toArray();
             return new UnmarkCommand(varargs);
         case "delete":
+            if (args.isEmpty()) {
+                emptyCommandError(cmd);
+            }
             return new DeleteCommand(parseIndex(args));
         case "find":
             if (args.isEmpty()) {
@@ -70,8 +78,7 @@ public class InputParser {
         case "bye":
             return new ByeCommand();
         default:
-            throw new FocusException(String.format("     "
-                    + "OOPS!!! I'm sorry, but I don't know what that means :-(\n    "));
+            throw new FocusException("OOPS!!! I'm sorry, but I don't know what that means :-(\n    ");
         }
     }
 
@@ -79,43 +86,72 @@ public class InputParser {
     /**
      * Parses a Deadline command in the form:
      * deadline [desc] /by yyyy-MM-dd.
+     * Note: Used ChatGPT here to modify parseDeadline to handle local date time formats
      *
      * @param args Argument portion after the deadline keyword.
      * @return A command that adds the deadline.
      * @throws FocusException If the arguments are missing or malformed.
      */
     private static FocusCommand parseDeadline(String args) throws FocusException {
-        String[] seg = args.split("/by", 2);
-        if (seg.length < 2) {
-            throw new FocusException("     Use: deadline <desc> /by yyyy-MM-dd\n");
+
+        final String deadlineBy = "/by";
+        int byIdx = args.indexOf(deadlineBy);
+        if (byIdx < 0) {
+            throw new FocusException("     Usage: deadline <description> /by yyyy-MM-dd HHmm");
         }
-        return new DeadlineCommand(seg[0].trim(), seg[1].trim());
+
+        String desc = args.substring(0, byIdx).trim();
+        String byRaw = args.substring(byIdx + deadlineBy.length()).trim();
+
+        if (desc.isEmpty() || byRaw.isEmpty()) {
+            throw new FocusException("     Usage: deadline <description> /by yyyy-MM-dd HHmm");
+        }
+
+        return new DeadlineCommand(desc, byRaw);
+
     }
 
 
     /**
      * Parses an Event command in the form:
      * event [desc] /from [start] /to [end].
+     * Note: Used ChatGPT here to modify parseEvent to handle local date time formats
      *
      * @param args Argument portion after the {event} keyword.
      * @return A command that adds the event.
      * @throws FocusException If the arguments are missing or malformed.
      */
     private static FocusCommand parseEvent(String args) throws FocusException {
-        String[] fromSplit = args.split("/from", 2);
-        if (fromSplit.length < 2) {
-            throw new FocusException("     Use: event <desc> /from <start> /to <end>\n");
-        }
-        String desc = fromSplit[0].trim();
 
-        String[] toSplit = fromSplit[1].split("/to", 2);
-        if (toSplit.length < 2) {
-            throw new FocusException("     Use: event <desc> /from <start> /to <end>\n");
-        }
-        String start = toSplit[0].trim();
-        String end = toSplit[1].trim();
+        final String eventFrom = "/from";
+        final String eventTo = "/to";
 
-        return new EventCommand(desc, start, end);
+        int fromIdx = args.indexOf(eventFrom);
+        int toIdx = args.indexOf(eventTo);
+        if (fromIdx < 0 || toIdx < 0 || toIdx <= fromIdx) {
+            throw new FocusException("     Usage: event <description> /from yyyy-MM-dd HHmm /to yyyy-MM-dd HHmm");
+        }
+
+        String desc = args.substring(0, fromIdx).trim();
+        if (desc.isEmpty()) {
+            emptyCommandError("event");
+        }
+
+        String afterFrom = args.substring(fromIdx + eventFrom.length()).trim();
+        int relTo = afterFrom.indexOf(eventTo);
+        if (relTo < 0) {
+            throw new FocusException("     Usage: event <description> /from yyyy-MM-dd HHmm /to yyyy-MM-dd HHmm");
+        }
+
+        String startRaw = afterFrom.substring(0, relTo).trim();
+        String endRaw = args.substring(toIdx + eventTo.length()).trim();
+
+        if (startRaw.isEmpty() || endRaw.isEmpty()) {
+            throw new FocusException("     Usage: event <description> /from yyyy-MM-dd HHmm /to yyyy-MM-dd HHmm");
+        }
+
+        return new EventCommand(desc, startRaw, endRaw);
+
     }
 
     /**
@@ -141,7 +177,7 @@ public class InputParser {
      *
      * @param s Text that should contain one or more positive integers.
      * @return Parsed one-based index or multi-index (e.g. "1" or "1 2 3") stored in Integer list.
-     * @throws FocusException If the text is empty or not a number.
+     * @throws FocusException If the text is empty or not a positive integer number.
      */
     private static List<Integer> parseIndexes(String s) throws FocusException {
         if (s == null || s.isBlank()) {
@@ -151,7 +187,11 @@ public class InputParser {
         List<Integer> toRet = new ArrayList<>(stringList.length);
         for (String t : stringList) {
             try {
-                toRet.add(Integer.parseInt(t));
+                Integer checkInteger = Integer.parseInt(t);
+                if (checkInteger <= 0) {
+                    throw new FocusException("     Indices must be positive integers!");
+                }
+                toRet.add(checkInteger);
             } catch (NumberFormatException e) {
                 throw new FocusException("     Indices must be numbers (got: \"" + t + "\").");
             }
