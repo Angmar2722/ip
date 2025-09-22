@@ -9,7 +9,7 @@ import java.util.List;
 public class InputParser {
 
     /** Throw an error for an empty description of a known command. */
-    private static void emptyCommandError(String cmd) {
+    private static void emptyCommandError(String cmd) throws FocusException {
         throw new FocusException(("     "
                     + "OOPS!!! The description of a %s cannot be empty.\n    "
                     + cmd));
@@ -52,6 +52,7 @@ public class InputParser {
             return parseEvent(args);
         case "mark":
             List<Integer> indexes = parseIndexes(args); // args can be "3" or "1 2 3"
+            assert indexes.stream().allMatch(i -> i > 0) : "Indexes must be 1-based positive integers";
             int[] varargs = indexes.stream().mapToInt(Integer::intValue).toArray();
             return new MarkCommand(varargs);
         case "unmark":
@@ -142,7 +143,7 @@ public class InputParser {
      * @return Parsed one-based index or multi-index (e.g. "1" or "1 2 3") stored in Integer list.
      * @throws FocusException If the text is empty or not a number.
      */
-    private static List<Integer> parseIndexes(String s) {
+    private static List<Integer> parseIndexes(String s) throws FocusException {
         if (s == null || s.isBlank()) {
             throw new FocusException("     Index required.");
         }
