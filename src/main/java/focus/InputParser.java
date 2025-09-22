@@ -55,7 +55,10 @@ public class InputParser {
             int[] varargs = indexes.stream().mapToInt(Integer::intValue).toArray();
             return new MarkCommand(varargs);
         case "unmark":
-            return new UnmarkCommand(parseIndex(args));
+            indexes = parseIndexes(args); // args can be "3" or "1 2 3"
+            assert indexes.stream().allMatch(i -> i > 0) : "Indexes must be 1-based positive integers";
+            varargs = indexes.stream().mapToInt(Integer::intValue).toArray();
+            return new UnmarkCommand(varargs);
         case "delete":
             return new DeleteCommand(parseIndex(args));
         case "find":
