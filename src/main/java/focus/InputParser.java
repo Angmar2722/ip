@@ -11,7 +11,7 @@ public class InputParser {
     /** Throw an error for an empty description of a known command. */
     private static void emptyCommandError(String cmd) throws FocusException {
         throw new FocusException(String.format(
-                "     OOPS!!! The description of a %s command cannot be empty.\n    ", cmd));
+                "     OOPS!!! The description of a %s command cannot be empty.", cmd));
     }
 
     /**
