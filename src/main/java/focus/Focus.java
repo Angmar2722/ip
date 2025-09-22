@@ -13,6 +13,7 @@ public class Focus {
     private final TaskList taskList;
     private final TaskStorage storage;
     private boolean exitRequested = false;
+    private boolean lastCallWasFocusException = false;
 
     /**
      * Load tasks into Focus.
@@ -56,6 +57,8 @@ public class Focus {
 
         String fallbackMessage = null;
 
+        this.lastCallWasFocusException = false;
+
         try {
 
             FocusCommand cmd = InputParser.parse(input);
@@ -71,6 +74,7 @@ public class Focus {
             this.exitRequested = cmd.isExit();
 
         } catch (FocusException fe) {
+            this.lastCallWasFocusException = true;
             fallbackMessage = fe.getMessage();
         } catch (Exception e) {
             fallbackMessage = "Unexpected error: " + e.getMessage();
@@ -89,6 +93,11 @@ public class Focus {
 
         return "Something went wrong. Could not perform text I/O!";
 
+    }
+
+    /** Lets the controller close the app after an exit command. */
+    public boolean checklastCallWasFocusException() {
+        return this.lastCallWasFocusException;
     }
 
     /** Lets the controller close the app after an exit command. */

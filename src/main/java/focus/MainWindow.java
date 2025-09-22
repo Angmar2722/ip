@@ -26,9 +26,20 @@ public class MainWindow extends AnchorPane {
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/user.png"));
     private Image focusImage = new Image(this.getClass().getResourceAsStream("/images/focus.png"));
 
+    /** Initializes the main window controller after its FXML has been loaded. */
     @FXML
     public void initialize() {
+
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
+
+        scrollPane.setFitToWidth(true); // make the scroll content follow the viewport width
+        dialogContainer.setFillWidth(true);
+
+        // Auto-resizing mechanism shown below generated with the help of ChatGPT
+        scrollPane.viewportBoundsProperty().addListener((obs, oldB, newB) -> {
+            dialogContainer.setPrefWidth(newB.getWidth());
+        });
+
     }
 
     /** Injects the Focus instance */
@@ -47,12 +58,19 @@ public class MainWindow extends AnchorPane {
      */
     @FXML
     private void handleUserInput() {
+
         String input = userInput.getText();
+
+        dialogContainer.getChildren().add(DialogBox.getUserDialog(input, userImage));
+
         String response = focus.getResponse(input);
-        dialogContainer.getChildren().addAll(
-                DialogBox.getUserDialog(input, userImage),
-                DialogBox.getFocusDialog(response, focusImage)
-        );
+
+        if (focus.checklastCallWasFocusException()) {
+            dialogContainer.getChildren().add(DialogBox.getErrorDialog(response, focusImage));
+        } else {
+            dialogContainer.getChildren().add(DialogBox.getFocusDialog(response, focusImage));
+        }
+
         userInput.clear();
 
         if (focus.isExitRequested()) {
