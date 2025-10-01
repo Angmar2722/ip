@@ -30,25 +30,52 @@ public class TaskList {
             throw new FocusException("     Index required.");
         }
 
-        System.out.println("     Nice! I've marked these tasks as done:");
+        StringBuilder sb = new StringBuilder("     Nice! I've marked these tasks as done:\n");
+        StringBuilder sb2 = new StringBuilder("Note that the following task indices are already marked as done:");
 
         if (userIndexes.length == 1) {
             int index = userIndexes[0] - 1;
             if (index < 0 || index >= this.tasks.size()) {
                 throw new FocusException("     Index out of range: " + index);
             }
-            tasks.get(userIndexes[0] - 1).markAsDone(); // Input index is one-indexes
-            System.out.printf("       %s\n", tasks.get(index));
+            Task singleTask = tasks.get(userIndexes[0] - 1);
+            if (singleTask.isDone()) {
+                System.out.printf("       This task is already marked as done!");
+                return;
+            } else {
+                singleTask.markAsDone();
+                sb.append(String.format("       %s\n", tasks.get(index)));
+            }
+            System.out.println(sb);
             return;
         }
+
+        boolean allMarkedDone = true;
+        boolean allMarkedNotDone = true;
 
         for (int userIndex : userIndexes) {
             int i = userIndex - 1; // convert 1-based to 0-based
             if (i < 0 || i >= this.tasks.size()) {
                 throw new FocusException("     Index out of range: " + userIndex);
             }
-            tasks.get(i).markAsDone();
-            System.out.printf("       %s\n", tasks.get(i));
+            Task currentTask = tasks.get(i);
+            if (!currentTask.isDone()) { // Current task isn't done
+                allMarkedDone = false;
+                currentTask.markAsDone();
+                sb.append(String.format("       %s\n", tasks.get(i)));
+            } else {
+                sb2.append(String.format(" %d", i + 1));
+                allMarkedNotDone = false;
+            }
+        }
+
+        if (allMarkedDone) {
+            System.out.printf("       All inputted tasks already marked as done!");
+        } else if (allMarkedNotDone) {
+            System.out.println(sb);
+        } else {
+            System.out.println(sb);
+            System.out.println(sb2);
         }
 
     }
@@ -62,25 +89,52 @@ public class TaskList {
             throw new FocusException("     Index required.");
         }
 
-        System.out.println("     Nice! I've marked these tasks as not done:");
+        StringBuilder sb = new StringBuilder("     Nice! I've marked these tasks as not done:\n");
+        StringBuilder sb2 = new StringBuilder("Note that the following task indices are already marked as not done:");
 
         if (userIndexes.length == 1) {
             int index = userIndexes[0] - 1;
             if (index < 0 || index >= this.tasks.size()) {
                 throw new FocusException("     Index out of range: " + index);
             }
-            tasks.get(userIndexes[0] - 1).markNotDone(); // Input index is one-indexes
-            System.out.printf("       %s\n", tasks.get(index));
+            Task singleTask = tasks.get(userIndexes[0] - 1);
+            if (!singleTask.isDone()) {
+                System.out.printf("       This task is already marked as not done!");
+                return;
+            } else {
+                singleTask.markNotDone();
+                sb.append(String.format("       %s\n", tasks.get(index)));
+            }
+            System.out.println(sb);
             return;
         }
+
+        boolean allMarkedNotDone = true;
+        boolean allMarkedDone = true;
 
         for (int userIndex : userIndexes) {
             int i = userIndex - 1; // convert 1-based to 0-based
             if (i < 0 || i >= this.tasks.size()) {
                 throw new FocusException("     Index out of range: " + userIndex);
             }
-            tasks.get(i).markNotDone();
-            System.out.printf("       %s\n", tasks.get(i));
+            Task currentTask = tasks.get(i);
+            if (currentTask.isDone()) { // Current task is done
+                allMarkedNotDone = false;
+                currentTask.markNotDone();
+                sb.append(String.format("       %s\n", tasks.get(i)));
+            } else { // Current task isn't done
+                sb2.append(String.format(" %d", i + 1));
+                allMarkedDone = false;
+            }
+        }
+
+        if (allMarkedNotDone) {
+            System.out.printf("       All inputted tasks already marked as not done!");
+        } else if (allMarkedDone) {
+            System.out.println(sb);
+        } else {
+            System.out.println(sb);
+            System.out.println(sb2);
         }
 
     }
