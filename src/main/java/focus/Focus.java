@@ -61,7 +61,7 @@ public class Focus {
 
         try {
 
-            FocusCommand cmd = InputParser.parse(input);
+            FocusCommand cmd = InputParser.parse(input, taskList.size());
             cmd.execute(taskList);
             if (cmd.isMutating()) {
                 try {
